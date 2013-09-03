@@ -1,0 +1,7 @@
+base   fontsize2
+author Thorsten Stratmann
+email  thorsten.stratmann@web.de
+date   2010-03-26
+name   fontsize2 plugin
+desc   DokuWiki plugin for controlling the size of your text
+url    https://www.dokuwiki.org/plugin:fontsize2
