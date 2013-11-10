@@ -17,48 +17,33 @@ require_once(DOKU_PLUGIN.'syntax.php');
  * need to inherit from this class
  */
 class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
- 
-    function getInfo(){  // return some info
-        return array(
-            'author' => 'Thorsten Stratmann',
-            'email'  => 'thorsten.stratmann@web.de',
-            'date'   => '2010-03-26',
-            'name'   => 'fontsize2 Plugin',
-            'desc'   => 'With fs you can control the size of your text
-                         Syntax: <fs size>Your Text</fs>
-                         you can use  any Value for size (em, ex, px, % , or xx-small , x-small, small, medium, large, x-large, xx-large)
-                         example: <fs 2em>Your Text in 2em, 1em is dokuwiki standard</fs>
-                         <fs 200%>Your Text in 200%, 100% is dokuwiki standard</fs>',
-            'url'    => 'http://wiki.splitbrain.org/plugin:fontsize2',
-        );
-    }
- 
-     // What kind of syntax are we?
-    function getType(){ return 'formatting'; }
+
+    // What kind of syntax are we?
+    public function getType(){ return 'formatting'; }
 
     // What kind of syntax do we allow (optional)
-    function getAllowedTypes() {
+    public function getAllowedTypes() {
         return array('formatting', 'substition', 'disabled');
     }
 
-   // What about paragraphs? (optional)
-   function getPType(){ return 'normal'; }
+    // What about paragraphs? (optional)
+    public function getPType(){ return 'normal'; }
 
     // Where to sort in?
-    function getSort(){ return 91; }
+    public function getSort(){ return 91; }
 
 
     // Connect pattern to lexer
-    function connectTo($mode) {
+    public function connectTo($mode) {
         $this->Lexer->addEntryPattern('(?i)<fs(?: .+?)?>(?=.+</fs>)',$mode,'plugin_fontsize2');
     }
-    function postConnect() {
+    public function postConnect() {
         $this->Lexer->addExitPattern('(?i)</fs>','plugin_fontsize2');
     }
 
 
     // Handle the match
-    function handle($match, $state, $pos, &$handler) {
+    public function handle($match, $state, $pos, &$handler) {
         switch ($state) {
           case DOKU_LEXER_ENTER : 
             preg_match("/(?i)<fs (.+?)>/", $match, $fs);   // get the fontsize
@@ -78,7 +63,7 @@ class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
     }
 
     // Create output
-    function render($mode, &$renderer, $data) {
+    public function render($mode, &$renderer, $data) {
         if($mode == 'xhtml'){
             list($state, $fs) = $data;
             switch ($state) {
@@ -101,7 +86,7 @@ class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
         return false;
     }
 
-    function _isValid($c) {
+    protected function _isValid($c) {
         $c = trim($c);
         $pattern = "/
           ^([0-9]{1,4})\.[0-9](em|ex|px|%)|^([0-9]{1,4}(em|ex|px|%))|^(xx-small|x-small|small|medium|large|x-large|xx-large)

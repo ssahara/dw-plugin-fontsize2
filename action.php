@@ -17,7 +17,7 @@ class action_plugin_fontsize2 extends DokuWiki_Action_Plugin {
      *
      * @author Andreas Gohr <andi@splitbrain.org>
      */
-    function getInfo(){
+    public function getInfo(){
         return array_merge(confToHash(dirname(__FILE__).'/README'), array('name' => 'Toolbar Component'));
     }
 
@@ -26,11 +26,11 @@ class action_plugin_fontsize2 extends DokuWiki_Action_Plugin {
      *
      * @author Andreas Gohr <andi@splitbrain.org>
      */
-    function register(&$controller){
+    public function register(Doku_Event_Handler $controller){
         $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'fontsize2_toolbar', array ());
     }
 
-    function fontsize2_toolbar(&$event, $param) {
+    public function fontsize2_toolbar(&$event, $param) {
         $event->data[] = array (
             'type' => 'picker',
             'title' => $this->getLang('fs_picker'),
