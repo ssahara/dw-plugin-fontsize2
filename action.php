@@ -7,19 +7,7 @@
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
 
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-require_once(DOKU_PLUGIN.'action.php');
-
 class action_plugin_fontsize2 extends DokuWiki_Action_Plugin {
-
-    /**
-     * return some info
-     *
-     * @author Andreas Gohr <andi@splitbrain.org>
-     */
-    public function getInfo(){
-        return array_merge(confToHash(dirname(__FILE__).'/README'), array('name' => 'Toolbar Component'));
-    }
 
     /**
      * register the eventhandlers
@@ -30,7 +18,7 @@ class action_plugin_fontsize2 extends DokuWiki_Action_Plugin {
         $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'fontsize2_toolbar', array ());
     }
 
-    public function fontsize2_toolbar(&$event, $param) {
+    public function fontsize2_toolbar($event, $param) {
         $event->data[] = array (
             'type' => 'picker',
             'title' => $this->getLang('fs_picker'),

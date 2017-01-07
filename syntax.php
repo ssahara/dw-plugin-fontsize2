@@ -3,15 +3,14 @@
  * FontSize2 Plugin: control the size of your text
  *
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author      Thorsten Stratmann <thorsten.stratmann@web.de>
- * @link          https://wiki.splitbrain.org/plugin:fontsize2
- * @version    0.2
+ * @author     Thorsten Stratmann <thorsten.stratmann@web.de>
+ * @link       https://www.dokuwiki.org/plugin:fontsize2
+ * @version    0.3
  */
- 
-if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__).'/../../').'/');
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-require_once(DOKU_PLUGIN.'syntax.php');
- 
+
+// must be run within Dokuwiki
+if(!defined('DOKU_INC')) die();
+
 /**
  * All DokuWiki plugins to extend the parser/rendering mechanism
  * need to inherit from this class
@@ -43,7 +42,7 @@ class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
 
 
     // Handle the match
-    public function handle($match, $state, $pos, &$handler) {
+    public function handle($match, $state, $pos, Doku_Handler $handler) {
         switch ($state) {
           case DOKU_LEXER_ENTER : 
             preg_match("/(?i)<fs (.+?)>/", $match, $fs);   // get the fontsize
@@ -63,8 +62,8 @@ class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
     }
 
     // Create output
-    public function render($mode, &$renderer, $data) {
-        if($mode == 'xhtml'){
+    public function render($format, Doku_Renderer $renderer, $data) {
+        if($format == 'xhtml'){
             list($state, $fs) = $data;
             switch ($state) {
               case DOKU_LEXER_ENTER : 
@@ -88,9 +87,9 @@ class syntax_plugin_fontsize2 extends DokuWiki_Syntax_Plugin {
 
     protected function _isValid($c) {
         $c = trim($c);
-        $pattern = "/
-          ^([0-9]{1,4})\.[0-9](em|ex|px|%)|^([0-9]{1,4}(em|ex|px|%))|^(xx-small|x-small|small|medium|large|x-large|xx-large)
-                              /x";
+        $pattern = "/^([0-9]{1,4})\.[0-9](em|ex|px|%)|"
+                   ."^([0-9]{1,4}(em|ex|px|%))|"
+                   ."^(xx-small|x-small|small|medium|large|x-large|xx-large)/x";
         if (preg_match($pattern, $c)) return true;
     }
 }
